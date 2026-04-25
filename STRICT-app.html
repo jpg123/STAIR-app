@@ -718,10 +718,6 @@
             <div id="nfBar" class="gauge-segment" style="background: #999"></div>
         </div>
 
-        <div class="btn-row">
-            <button class="btn-action" id="shareResultsButton">Share results</button>
-            <button class="btn-action btn-secondary" id="shareAppButton">Text app</button>
-        </div>
     </div>
 
     <footer>
@@ -792,9 +788,6 @@
     const INTENSITY_LOAD = { BURN: 1.0, FROST: 1.08, NF: 1.96 };
     const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
     const BASE_LOS = 11.4;
-    const PUBLIC_APP_URL = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
-    const shareResultsButton = document.getElementById('shareResultsButton');
-    const shareAppButton = document.getElementById('shareAppButton');
     const weightedHelp = document.getElementById('weightedHelp');
     const weightedHelpPanel = document.getElementById('weightedHelpPanel');
 
@@ -810,76 +803,6 @@
             toggleWeightedHelp();
         }
     });
-
-    function buildShareText() {
-        const b = parseInt(document.getElementById('burnIn').value);
-        const f = parseInt(document.getElementById('frostIn').value);
-        const n = parseInt(document.getElementById('nfIn').value);
-        const actualDailyBeds = b + f + n;
-
-        return [
-            `Burn cases: ${b}`,
-            `Frostbite cases: ${f}`,
-            `Necrotizing Fasciitis Cases: ${n}`,
-            `Actual daily beds: ${actualDailyBeds}`,
-            `Resource-weighted beds: ${(b * INTENSITY_LOAD.BURN + f * INTENSITY_LOAD.FROST + n * INTENSITY_LOAD.NF).toFixed(2)}`
-        ].join('\n');
-    }
-
-    async function shareResults() {
-        const shareText = buildShareText();
-
-        try {
-            if (navigator.share) {
-                await navigator.share({
-                    title: 'Soft-Tissue Resource Intensity Calculator Results',
-                    text: shareText
-                });
-                return;
-            }
-
-            await navigator.clipboard.writeText(shareText);
-            alert('Results copied to clipboard');
-        } catch (err) {
-            console.error(err);
-            alert('Unable to share from this browser.');
-        }
-    }
-
-    async function shareApp() {
-        const appUrl = PUBLIC_APP_URL;
-        const message = [
-            'Soft-Tissue Resource Intensity Calculator file.',
-            'Open this link to use the app:',
-            appUrl
-        ].join('\n');
-
-        try {
-            if (navigator.share) {
-                await navigator.share({
-                    title: 'Soft-Tissue Resource Intensity Calculator',
-                    text: message,
-                    url: appUrl
-                });
-                return;
-            }
-
-            await navigator.clipboard.writeText(message);
-            alert('App message copied to clipboard.');
-        } catch (err) {
-            console.error(err);
-            try {
-                await navigator.clipboard.writeText(message);
-                alert('App message copied to clipboard.');
-            } catch (clipboardErr) {
-                console.error(clipboardErr);
-                alert('Unable to share from this browser.');
-            }
-        }
-    }
-
-    shareResultsButton.addEventListener('click', shareResults);
-    shareAppButton.addEventListener('click', shareApp);
 
     function update() {
         const b = parseInt(document.getElementById('burnIn').value);

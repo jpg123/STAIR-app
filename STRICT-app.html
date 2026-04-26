@@ -193,11 +193,9 @@
             }
 
             .share-actions {
-                flex-wrap: wrap;
-            }
-
-            .share-actions .btn-action {
-                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
             }
 
             .gauge-container {
@@ -631,13 +629,25 @@
 
         .share-copy {
             margin-top: 14px;
-            padding: 14px;
-            border: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.03);
+            padding: 14px 14px 14px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            border-left: 5px solid var(--text);
+            border-radius: 18px 18px 18px 6px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.045), rgba(0, 0, 0, 0.02));
             font-size: 0.85rem;
             line-height: 1.5;
             display: none;
-            white-space: pre-wrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .share-copy.share-data {
+            border-left-color: #1f4b99;
+            background: linear-gradient(180deg, rgba(31, 75, 153, 0.10), rgba(31, 75, 153, 0.04));
+        }
+
+        .share-copy.share-app {
+            border-left-color: #7a3ea1;
+            background: linear-gradient(180deg, rgba(122, 62, 161, 0.10), rgba(122, 62, 161, 0.04));
         }
 
         .share-copy.open {
@@ -649,22 +659,38 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            opacity: 0.75;
+        }
+
+        .share-copy.share-data .share-title {
+            color: #24364d;
+        }
+
+        .share-copy.share-app .share-title {
+            color: #7a3ea1;
         }
 
         .share-copy .share-link {
             word-break: break-all;
         }
 
+        .share-copy .share-body {
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
         .share-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: nowrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-top: 18px;
         }
 
         .share-actions .btn-action {
-            width: 45%;
+            width: 100%;
             margin-top: 0;
         }
 
@@ -706,28 +732,6 @@
     </header>
 
     <div class="card">
-        <div class="score-panel compact">
-            <div class="metric-card">
-                <div class="metric-stack">
-                    <span class="metric-label">Actual Daily Beds</span>
-                    <span class="metric-value" id="dailyBeds">0</span>
-                </div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-stack">
-                    <span class="metric-help" id="weightedHelp" role="button" tabindex="0" aria-expanded="false" aria-controls="weightedHelpPanel">
-                        <span class="question-mark">?</span>
-                        Resource-Weighted Beds
-                    </span>
-                    <span class="metric-value" id="weightedBeds">0</span>
-                </div>
-                <div class="metric-help-panel" id="weightedHelpPanel">
-                    A weighted case-mix score reflecting relative resource burden.
-                    Formula: Burn x 1.00 + Frostbite x 1.08 + Necrotizing Fasciitis x 1.96.
-                </div>
-            </div>
-        </div>
-
         <div class="input-group">
             <div class="input-row">
                 <div class="label-wrap">
@@ -759,6 +763,28 @@
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
                     <span class="val-bubble" id="nfVal">2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-panel compact">
+            <div class="metric-card">
+                <div class="metric-stack">
+                    <span class="metric-label">Actual Daily Beds</span>
+                    <span class="metric-value" id="dailyBeds">0</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-stack">
+                    <span class="metric-help" id="weightedHelp" role="button" tabindex="0" aria-expanded="false" aria-controls="weightedHelpPanel">
+                        <span class="question-mark">?</span>
+                        Resource-Weighted Beds
+                    </span>
+                    <span class="metric-value" id="weightedBeds">0</span>
+                </div>
+                <div class="metric-help-panel" id="weightedHelpPanel">
+                    A weighted case-mix score reflecting relative resource burden.
+                    Formula: Burn x 1.00 + Frostbite x 1.08 + Necrotizing Fasciitis x 1.96.
                 </div>
             </div>
         </div>
@@ -909,13 +935,33 @@
     }
 
     function showShareCopy(title, body) {
-        shareCopy.innerHTML = `<span class="share-title">${title}</span>${body}`;
+        shareCopy.innerHTML = '';
+        shareCopy.classList.remove('share-data', 'share-app');
+        if (title === 'Share Data') {
+            shareCopy.classList.add('share-data');
+        } else if (title === 'Share App') {
+            shareCopy.classList.add('share-app');
+        }
+        const titleEl = document.createElement('span');
+        titleEl.className = 'share-title';
+        titleEl.textContent = title;
+        const bodyEl = document.createElement('div');
+        bodyEl.className = 'share-body';
+        bodyEl.textContent = body;
+        shareCopy.appendChild(titleEl);
+        shareCopy.appendChild(bodyEl);
         shareCopy.classList.add('open');
     }
 
     shareDataBtn.addEventListener('click', async () => {
         const { monthlyProjection, annualProjection } = update();
-        const message = `STRICT App finding: projected monthly bed-days = ${monthlyProjection.toLocaleString()}; projected annual bed-days = ${annualProjection.toLocaleString()}.`;
+        const actualDailyBeds = parseInt(document.getElementById('dailyBeds').innerText, 10);
+        const weightedBeds = document.getElementById('weightedBeds').innerText;
+        const message = `STRICT App finding:
+Actual daily beds = ${actualDailyBeds}
+Resource-weighted beds = ${weightedBeds}
+Projected monthly bed-days = ${monthlyProjection.toLocaleString()}
+Projected annual bed-days = ${annualProjection.toLocaleString()}`;
         try {
             if (navigator.share) {
                 await navigator.share({ text: message });
@@ -929,7 +975,10 @@
     });
 
     shareAppBtn.addEventListener('click', async () => {
-        const message = `Open the attached STRICT App HTML file in your browser, then install it if prompted by choosing “Add to Home Screen” or “Install App.” Once installed, you can launch it like a normal app.`;
+        const message = `STRICT App
+Open the attached HTML file in your browser
+If prompted, choose "Add to Home Screen" or "Install App"
+After installation, launch it like a normal app`;
         try {
             if (navigator.share) {
                 const shareData = { title: 'STRICT App', text: message };

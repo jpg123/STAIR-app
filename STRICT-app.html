@@ -12,12 +12,16 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Soft-Tissue Resource Intensity Calculator">
     <meta name="twitter:description" content="Open this file directly to use the app and share the calculator link with others.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script>
         (() => {
             const hostedUrl = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
             const localUrl = new URL('STRICT-app.html', window.location.href).href;
             const shareUrl = hostedUrl;
-            const description = 'Open the hosted app and share this page link with others.';
+            const description = 'Open the hosted app and share the app or generated data with others.';
 
             document.querySelector('meta[name="description"]')?.setAttribute('content', description);
             document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
@@ -185,6 +189,14 @@
             }
 
             .btn-action {
+                width: 100%;
+            }
+
+            .share-actions {
+                flex-wrap: wrap;
+            }
+
+            .share-actions .btn-action {
                 width: 100%;
             }
 
@@ -617,6 +629,45 @@
             margin-top: 20px;
         }
 
+        .share-copy {
+            margin-top: 14px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.03);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: none;
+            white-space: pre-wrap;
+        }
+
+        .share-copy.open {
+            display: block;
+        }
+
+        .share-copy .share-title {
+            display: block;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .share-copy .share-link {
+            word-break: break-all;
+        }
+
+        .share-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: nowrap;
+            margin-top: 18px;
+        }
+
+        .share-actions .btn-action {
+            width: 45%;
+            margin-top: 0;
+        }
+
         .btn-action:hover {
             opacity: 0.8;
         }
@@ -718,6 +769,24 @@
             <div id="nfBar" class="gauge-segment" style="background: #999"></div>
         </div>
 
+        <div class="projections-grid">
+            <div class="proj-card">
+                <span class="lab">Projected Monthly Bed-Days</span>
+                <span class="val" id="monthlyProjection">0</span>
+            </div>
+            <div class="proj-card">
+                <span class="lab">Projected Annual Bed-Days</span>
+                <span class="val" id="annualProjection">0</span>
+            </div>
+        </div>
+
+        <div class="share-actions">
+            <button class="btn-action" id="shareDataBtn" type="button">Share Data</button>
+            <button class="btn-action" id="shareAppBtn" type="button">Share App</button>
+        </div>
+
+        <div class="share-copy" id="shareCopy" aria-live="polite"></div>
+
     </div>
 
     <footer>
@@ -790,6 +859,10 @@
     const BASE_LOS = 11.4;
     const weightedHelp = document.getElementById('weightedHelp');
     const weightedHelpPanel = document.getElementById('weightedHelpPanel');
+    const shareDataBtn = document.getElementById('shareDataBtn');
+    const shareAppBtn = document.getElementById('shareAppBtn');
+    const shareCopy = document.getElementById('shareCopy');
+    const hostedUrl = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
 
     function toggleWeightedHelp() {
         const isOpen = weightedHelpPanel.classList.toggle('open');
@@ -818,15 +891,65 @@
         const nLoad = n * INTENSITY_LOAD.NF;
         const intensityLoad = bLoad + fLoad + nLoad;
         const actualDailyBeds = b + f + n;
+        const monthlyProjection = Math.round(intensityLoad * BASE_LOS);
+        const annualProjection = Math.round(monthlyProjection * 12);
 
         document.getElementById('dailyBeds').innerText = actualDailyBeds;
         document.getElementById('weightedBeds').innerText = intensityLoad.toFixed(2);
+        document.getElementById('monthlyProjection').innerText = monthlyProjection.toLocaleString();
+        document.getElementById('annualProjection').innerText = annualProjection.toLocaleString();
 
         if (intensityLoad > 0) {
             document.getElementById('burnBar').style.width = (bLoad / intensityLoad * 100) + '%';
             document.getElementById('frostBar').style.width = (fLoad / intensityLoad * 100) + '%';
             document.getElementById('nfBar').style.width = (nLoad / intensityLoad * 100) + '%';
         }
+
+        return { monthlyProjection, annualProjection };
+    }
+
+    function showShareCopy(title, body) {
+        shareCopy.innerHTML = `<span class="share-title">${title}</span>${body}`;
+        shareCopy.classList.add('open');
+    }
+
+    shareDataBtn.addEventListener('click', async () => {
+        const { monthlyProjection, annualProjection } = update();
+        const message = `STRICT App finding: projected monthly bed-days = ${monthlyProjection.toLocaleString()}; projected annual bed-days = ${annualProjection.toLocaleString()}.`;
+        try {
+            if (navigator.share) {
+                await navigator.share({ text: message });
+            } else if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(message);
+            }
+        } catch (error) {
+            console.warn('Share Data failed', error);
+        }
+        showShareCopy('Share Data', message);
+    });
+
+    shareAppBtn.addEventListener('click', async () => {
+        const message = `Open the attached STRICT App HTML file in your browser, then install it if prompted by choosing “Add to Home Screen” or “Install App.” Once installed, you can launch it like a normal app.`;
+        try {
+            if (navigator.share) {
+                const shareData = { title: 'STRICT App', text: message };
+                if (window.location && window.location.href) {
+                    shareData.url = window.location.href;
+                }
+                await navigator.share(shareData);
+            }
+        } catch (error) {
+            console.warn('Share App failed', error);
+        }
+        showShareCopy('Share App', message + `\n\nHTML: ${hostedUrl}`);
+    });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch((error) => {
+                console.warn('Service worker registration failed', error);
+            });
+        });
     }
 
     update();

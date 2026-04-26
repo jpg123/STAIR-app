@@ -1,0 +1,17 @@
+{
+  "name": "Soft-Tissue Resource Intensity Calculator",
+  "short_name": "STRICT App",
+  "description": "Soft-Tissue Resource Intensity Calculator for projected bed-day planning.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

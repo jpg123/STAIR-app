@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soft-Tissue Resource Intensity Calculator | Hospital Resource Utilization Tool</title>
-    <meta name="description" content="Soft-Tissue Resource Intensity Calculator. Open this file directly to use the app and share the calculator link with others.">
+    <title>Soft-Tissue Resource Intensity Calculator | STRIF Derivation Companion</title>
+    <meta name="description" content="Soft-Tissue Resource Intensity Calculator for the standalone STRIF-derivation study.">
     <meta property="og:title" content="Soft-Tissue Resource Intensity Calculator">
-    <meta property="og:description" content="Open this file directly to use the app. Share this page link with others.">
+    <meta property="og:description" content="Companion calculator for the standalone STRIF-derivation study.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jpg123.github.io/STRICT-app/STRICT-app.html">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Soft-Tissue Resource Intensity Calculator">
-    <meta name="twitter:description" content="Open this file directly to use the app and share the calculator link with others.">
+    <meta name="twitter:description" content="Companion calculator for the standalone STRIF-derivation study.">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,14 +21,14 @@
             const hostedUrl = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
             const localUrl = new URL('STRICT-app.html', window.location.href).href;
             const shareUrl = hostedUrl;
-            const description = 'Open the hosted app and share the app or generated data with others.';
+            const description = 'Companion calculator for the standalone STRIF-derivation study.';
 
             document.querySelector('meta[name="description"]')?.setAttribute('content', description);
             document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
             document.querySelector('meta[property="og:url"]')?.setAttribute('content', shareUrl);
             document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
 
-            document.title = 'Soft-Tissue Resource Intensity Calculator | Hospital Resource Utilization Tool';
+            document.title = 'Soft-Tissue Resource Intensity Calculator | STRIF Derivation Companion';
         })();
     </script>
     <style>
@@ -398,6 +398,11 @@
             border: 2px solid var(--border);
             padding: 10px 12px;
             min-height: 104px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .metric-stack + .metric-stack {
@@ -443,6 +448,7 @@
         .metric-help {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             margin-top: 2px;
             font-size: 0.68rem;
@@ -578,6 +584,10 @@
             border: 2px solid var(--border);
             padding: 15px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .proj-card .val {
@@ -625,6 +635,10 @@
             letter-spacing: 1px;
             cursor: pointer;
             margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .share-copy {
@@ -726,7 +740,7 @@
 <div class="container">
     <header>
         <h1 class="brand">STRICT App</h1>
-        <div class="tagline">Soft-Tissue Resource Intensity Calculator</div>
+        <div class="tagline">STRIF Derivation Companion</div>
         <button id="theme-toggle">Dark Mode</button>
         <button id="glass-toggle">Glass Mode</button>
     </header>
@@ -816,7 +830,7 @@
     </div>
 
     <footer>
-        Soft-Tissue Resource Intensity Calculator (STRICT) | JACS Supplemental Digital Content<br>
+        Soft-Tissue Resource Intensity Calculator (STRICT) | Companion to STRIF-derivation study<br>
         <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STRICT%20app">Questions?</a><br>
     </footer>
 </div>

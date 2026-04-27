@@ -1,7 +1,7 @@
 {
   "name": "Soft-Tissue Resource Intensity Calculator",
   "short_name": "STRICT App",
-  "description": "Soft-Tissue Resource Intensity Calculator for projected bed-day planning.",
+  "description": "Soft-Tissue Resource Intensity Calculator linked to the standalone STRIF-derivation study.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

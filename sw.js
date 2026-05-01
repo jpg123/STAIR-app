@@ -1,8 +1,8 @@
-const CACHE_NAME = 'strict-app-v1';
+const CACHE_NAME = 'stair-app-v1';
 const ASSETS = [
   './',
   './index.html',
-  './STRICT-app.html',
+  './STAIR-app.html',
   './manifest.json',
   './icon.svg'
 ];

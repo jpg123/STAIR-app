@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soft-Tissue Resource Intensity Calculator | STRIF Derivation Companion</title>
-    <meta name="description" content="Soft-Tissue Resource Intensity Calculator for the standalone STRIF-derivation study.">
-    <meta property="og:title" content="Soft-Tissue Resource Intensity Calculator">
-    <meta property="og:description" content="Companion calculator for the standalone STRIF-derivation study.">
+    <title>STAIR | Soft-Tissue Adjustment Intensity Ratio</title>
+    <meta name="description" content="STAIR, the Soft-Tissue Adjustment Intensity Ratio calculator for the standalone STAIR-derivation study.">
+    <meta property="og:title" content="STAIR | Soft-Tissue Adjustment Intensity Ratio">
+    <meta property="og:description" content="Companion calculator for the standalone STAIR-derivation study.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jpg123.github.io/STRICT-app/STRICT-app.html">
+    <meta property="og:url" content="https://jpg123.github.io/STAIR-app/STAIR-app.html">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Soft-Tissue Resource Intensity Calculator">
-    <meta name="twitter:description" content="Companion calculator for the standalone STRIF-derivation study.">
+    <meta name="twitter:title" content="STAIR | Soft-Tissue Adjustment Intensity Ratio">
+    <meta name="twitter:description" content="Companion calculator for the standalone STAIR-derivation study.">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script>
         (() => {
-            const hostedUrl = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
-            const localUrl = new URL('STRICT-app.html', window.location.href).href;
+            const hostedUrl = 'https://jpg123.github.io/STAIR-app/STAIR-app.html';
+            const localUrl = new URL('STAIR-app.html', window.location.href).href;
             const shareUrl = hostedUrl;
-            const description = 'Companion calculator for the standalone STRIF-derivation study.';
+            const description = 'Companion calculator for the standalone STAIR-derivation study.';
 
             document.querySelector('meta[name="description"]')?.setAttribute('content', description);
             document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
             document.querySelector('meta[property="og:url"]')?.setAttribute('content', shareUrl);
             document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
 
-            document.title = 'Soft-Tissue Resource Intensity Calculator | STRIF Derivation Companion';
+            document.title = 'STAIR | Soft-Tissue Adjustment Intensity Ratio';
         })();
     </script>
     <style>
@@ -82,7 +82,7 @@
 
         * {
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "Times New Roman", Times, serif;
         }
 
         body {
@@ -110,7 +110,6 @@
                 linear-gradient(120deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.16) 70%, rgba(255, 255, 255, 0.04)),
                 radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.32), transparent 35%);
             mix-blend-mode: screen;
-        }
         }
 
         .container {
@@ -256,6 +255,104 @@
             font-weight: 900;
             cursor: pointer;
             text-transform: uppercase;
+        }
+
+        .gate-toggle {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 18px 12px 88px;
+            background:
+                radial-gradient(circle at top, rgba(22, 32, 48, 0.96), rgba(0, 0, 0, 0.98));
+            color: #fff;
+            overflow: auto;
+        }
+
+        .intro-shell {
+            width: 100%;
+            max-width: 520px;
+            margin-top: 8px;
+        }
+
+        .intro-card {
+            background: rgba(0, 0, 0, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+            padding: 18px 16px 16px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .intro-title {
+            margin: 0 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .intro-text {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .intro-text p {
+            margin: 0 0 0.7rem 0;
+        }
+
+        .intro-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro-continue-btn {
+            position: fixed;
+            left: 50%;
+            bottom: max(1rem, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            z-index: 1001;
+            width: min(520px, calc(100vw - 24px));
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 14px;
+            padding: 1rem 1.1rem;
+            font-size: 0.95rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .gate-toggle:not(:checked) ~ .intro-screen {
+            display: flex;
+        }
+
+        .gate-toggle:checked ~ .intro-screen {
+            display: none;
+        }
+
+        .gate-toggle:checked ~ .container {
+            display: block;
+        }
+
+        .gate-toggle:not(:checked) ~ .container {
+            display: none;
         }
 
         .card {
@@ -736,11 +833,26 @@
     </style>
 </head>
 <body>
+<input type="checkbox" id="gate-toggle" class="gate-toggle" aria-hidden="true">
+<div class="intro-screen" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+    <div class="intro-shell">
+        <div class="intro-card">
+            <div class="intro-title" id="intro-title">Clinical Research Disclosure</div>
+            <div class="intro-text">
+                <p>STAIR is a planning tool derived from a Canadian provincial registry review of burns, frostbite, and necrotizing fasciitis admissions spanning 2004-2024.</p>
+                <p>The app summarizes comparative resource intensity for institutional planning and funding discussions. It is a research and administrative aid, not a bedside decision tool.</p>
+                <p>The underlying analysis uses PCA-derived contrast-specific weighting to compare hospital stay, ICU use, procedures, and transfusion burden across the three cohorts.</p>
+                <p>No patient-identifiable data is entered or transmitted from this device.</p>
+            </div>
+        </div>
+    </div>
+    <label for="gate-toggle" class="intro-continue-btn">Continue</label>
+</div>
 
 <div class="container">
     <header>
-        <h1 class="brand">STRICT App</h1>
-        <div class="tagline">STRIF Derivation Companion</div>
+        <h1 class="brand">STAIR</h1>
+        <div class="tagline">Soft-Tissue Resource Intensity Calculator</div>
         <button id="theme-toggle">Dark Mode</button>
         <button id="glass-toggle">Glass Mode</button>
     </header>
@@ -761,7 +873,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title">Frostbite Cases</span>
-                    <span class="factor">Unit Intensity: 1.08</span>
+                    <span class="factor">Unit Intensity: 0.68</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -772,7 +884,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title">Necrotizing Fasciitis Cases</span>
-                    <span class="factor">Unit Intensity: 1.96</span>
+                    <span class="factor">Unit Intensity: 1.69</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
@@ -798,7 +910,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: Burn x 1.00 + Frostbite x 1.08 + Necrotizing Fasciitis x 1.96.
+                    Formula: Burn x 1.00 + Frostbite x 0.6761 + Necrotizing Fasciitis x 1.6870.
                 </div>
             </div>
         </div>
@@ -830,14 +942,16 @@
     </div>
 
     <footer>
-        Soft-Tissue Resource Intensity Calculator (STRICT) | Companion to STRIF-derivation study<br>
-        <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STRICT%20app">Questions?</a><br>
+        Soft-Tissue Adjustment Intensity Ratio (STAIR) | Companion to STAIR-derivation study<br>
+        Weights updated to the PCA-derived contrast-specific intensity factors.<br>
+        <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STAIR%20app">Questions?</a><br>
     </footer>
 </div>
 
 <script>
     const themeToggle = document.getElementById('theme-toggle');
     const glassToggle = document.getElementById('glass-toggle');
+    const gateToggle = document.getElementById('gate-toggle');
 
     function syncThemeButtons() {
         const dark = document.body.classList.contains('dark-theme');
@@ -893,8 +1007,9 @@
     });
 
     syncThemeButtons();
+    gateToggle.checked = false;
 
-    const INTENSITY_LOAD = { BURN: 1.0, FROST: 1.08, NF: 1.96 };
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.6761, NF: 1.6870 };
     const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
     const BASE_LOS = 11.4;
     const weightedHelp = document.getElementById('weightedHelp');
@@ -902,7 +1017,7 @@
     const shareDataBtn = document.getElementById('shareDataBtn');
     const shareAppBtn = document.getElementById('shareAppBtn');
     const shareCopy = document.getElementById('shareCopy');
-    const hostedUrl = 'https://jpg123.github.io/STRICT-app/STRICT-app.html';
+    const hostedUrl = 'https://jpg123.github.io/STAIR-app/STAIR-app.html';
 
     function toggleWeightedHelp() {
         const isOpen = weightedHelpPanel.classList.toggle('open');
@@ -971,7 +1086,7 @@
         const { monthlyProjection, annualProjection } = update();
         const actualDailyBeds = parseInt(document.getElementById('dailyBeds').innerText, 10);
         const weightedBeds = document.getElementById('weightedBeds').innerText;
-        const message = `STRICT App finding:
+        const message = `STAIR finding:
 Actual daily beds = ${actualDailyBeds}
 Resource-weighted beds = ${weightedBeds}
 Projected monthly bed-days = ${monthlyProjection.toLocaleString()}
@@ -989,13 +1104,13 @@ Projected annual bed-days = ${annualProjection.toLocaleString()}`;
     });
 
     shareAppBtn.addEventListener('click', async () => {
-        const message = `STRICT App
+        const message = `STAIR
 Open the attached HTML file in your browser
 If prompted, choose "Add to Home Screen" or "Install App"
 After installation, launch it like a normal app`;
         try {
             if (navigator.share) {
-                const shareData = { title: 'STRICT App', text: message };
+                const shareData = { title: 'STAIR', text: message };
                 if (window.location && window.location.href) {
                     shareData.url = window.location.href;
                 }

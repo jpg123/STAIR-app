@@ -1,7 +1,7 @@
 {
-  "name": "Soft-Tissue Resource Intensity Calculator",
-  "short_name": "STRICT App",
-  "description": "Soft-Tissue Resource Intensity Calculator linked to the standalone STRIF-derivation study.",
+  "name": "STAIR",
+  "short_name": "STAIR",
+  "description": "STAIR, the Soft-Tissue Adjustment Intensity Ratio calculator linked to the standalone STAIR-derivation study.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAIR | Soft-Tissue Adjustment Intensity Ratio</title>
+    <meta name="description" content="STAIR, the Soft-Tissue Adjustment Intensity Ratio calculator for the standalone STAIR-derivation study.">
+    <meta property="og:title" content="STAIR | Soft-Tissue Adjustment Intensity Ratio">
+    <meta property="og:description" content="Companion calculator for the standalone STAIR-derivation study.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jpg123.github.io/STAIR-app/STAIR-app.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="STAIR | Soft-Tissue Adjustment Intensity Ratio">
+    <meta name="twitter:description" content="Companion calculator for the standalone STAIR-derivation study.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script>
+        (() => {
+            const hostedUrl = 'https://jpg123.github.io/STAIR-app/STAIR-app.html';
+            const localUrl = new URL('STAIR-app.html', window.location.href).href;
+            const shareUrl = hostedUrl;
+            const description = 'Companion calculator for the standalone STAIR-derivation study.';
+
+            document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+            document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+            document.querySelector('meta[property="og:url"]')?.setAttribute('content', shareUrl);
+            document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+
+            document.title = 'STAIR | Soft-Tissue Adjustment Intensity Ratio';
+        })();
+    </script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --text-muted: #666666;
+            --border: #000000;
+            --card-bg: #ffffff;
+            --accent: #000000;
+            --success: #333333;
+            --danger: #000000;
+            
+            /* Cohort Indicators (Subtle in B&W) */
+            --burn: #000000;
+            --frost: #444444;
+            --nf: #888888;
+        }
+
+        body.dark-theme {
+            --bg: #121212;
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
+            --border: #ffffff;
+            --card-bg: #1e1e1e;
+            --accent: #ffffff;
+            --success: #cccccc;
+            
+            --burn: #ffffff;
+            --frost: #cccccc;
+            --nf: #999999;
+        }
+
+        body.glass-theme {
+            --bg: radial-gradient(circle at top left, rgba(116, 182, 255, 0.32), transparent 28%),
+                  radial-gradient(circle at 85% 10%, rgba(110, 220, 255, 0.28), transparent 22%),
+                  radial-gradient(circle at 20% 90%, rgba(180, 120, 255, 0.20), transparent 25%),
+                  linear-gradient(135deg, #eef6ff 0%, #d8e8f8 55%, #c8dff5 100%);
+            --text: #0e1f33;
+            --text-muted: #49617f;
+            --border: rgba(255, 255, 255, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.18);
+            --accent: #0e1f33;
+            --success: #2e5c89;
+            --danger: #24364d;
+
+            --burn: #17324f;
+            --frost: #2f5c85;
+            --nf: #6f7f9b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        body.glass-theme {
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body.glass-theme::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(120deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.16) 70%, rgba(255, 255, 255, 0.04)),
+                radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.32), transparent 35%);
+            mix-blend-mode: screen;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            header {
+                padding-right: 0;
+                padding-top: 92px;
+            }
+
+            .brand {
+                font-size: 2rem;
+                line-height: 1;
+            }
+
+            .tagline {
+                font-size: 0.68rem;
+                letter-spacing: 1.4px;
+            }
+
+            #theme-toggle,
+            #glass-toggle {
+                width: calc(50% - 4px);
+                font-size: 0.66rem;
+            }
+
+            #glass-toggle {
+                right: 0;
+                top: 38px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .score-panel.compact {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-card {
+                min-height: 0;
+            }
+
+            .metric-card .metric-value {
+                font-size: 1.7rem;
+            }
+
+            .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .input-wrap {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            input[type="range"] {
+                width: calc(100% - 60px);
+            }
+
+            .btn-row {
+                width: 100%;
+            }
+
+            .btn-action {
+                width: 100%;
+            }
+
+            .share-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .gauge-container {
+                margin: 18px 0;
+            }
+        }
+
+        header {
+            position: relative;
+            text-align: left;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--border);
+            padding-bottom: 10px;
+            padding-right: 190px;
+        }
+
+        .brand {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        #theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 84px;
+            background: var(--text);
+            color: var(--bg);
+            border: 2px solid var(--border);
+            padding: 5px 8px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        #glass-toggle {
+            position: absolute;
+            top: 0;
+            right: 96px;
+            width: 84px;
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+            padding: 5px 8px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .gate-toggle {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 18px 12px 88px;
+            background:
+                radial-gradient(circle at top, rgba(22, 32, 48, 0.96), rgba(0, 0, 0, 0.98));
+            color: #fff;
+            overflow: auto;
+        }
+
+        .intro-shell {
+            width: 100%;
+            max-width: 520px;
+            margin-top: 8px;
+        }
+
+        .intro-card {
+            background: rgba(0, 0, 0, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+            padding: 18px 16px 16px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .intro-title {
+            margin: 0 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .intro-text {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .intro-text p {
+            margin: 0 0 0.7rem 0;
+        }
+
+        .intro-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro-continue-btn {
+            position: fixed;
+            left: 50%;
+            bottom: max(1rem, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            z-index: 1001;
+            width: min(520px, calc(100vw - 24px));
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 14px;
+            padding: 1rem 1.1rem;
+            font-size: 0.95rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .gate-toggle:not(:checked) ~ .intro-screen {
+            display: flex;
+        }
+
+        .gate-toggle:checked ~ .intro-screen {
+            display: none;
+        }
+
+        .gate-toggle:checked ~ .container {
+            display: block;
+        }
+
+        .gate-toggle:not(:checked) ~ .container {
+            display: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        body.glass-theme .card {
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            box-shadow:
+                0 18px 40px rgba(16, 36, 63, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            border-color: rgba(255, 255, 255, 0.55);
+            border-radius: 28px;
+        }
+
+        body.glass-theme .metric-card,
+        body.glass-theme .gauge-container,
+        body.glass-theme .btn-action,
+        body.glass-theme #theme-toggle,
+        body.glass-theme #glass-toggle {
+            backdrop-filter: blur(14px) saturate(1.15);
+            -webkit-backdrop-filter: blur(14px) saturate(1.15);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            border-radius: 22px;
+        }
+
+        body.glass-theme .metric-card {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.62);
+        }
+
+        body.glass-theme .gauge-container {
+            background: rgba(255, 255, 255, 0.28);
+            overflow: hidden;
+        }
+
+        body.glass-theme .btn-action {
+            background: rgba(16, 31, 51, 0.72);
+            color: #f7fbff;
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        body.glass-theme #theme-toggle,
+        body.glass-theme #glass-toggle {
+            background: rgba(255, 255, 255, 0.18);
+            color: var(--text);
+        }
+
+        body.glass-theme .val-bubble {
+            background: rgba(255, 255, 255, 0.20);
+        }
+
+        body.glass-theme .metric-help-panel {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 8px;
+            border-radius: 16px;
+        }
+
+        body.glass-theme .metric-card .metric-label,
+        body.glass-theme .metric-card .metric-subvalue-label,
+        body.glass-theme .metric-help,
+        body.glass-theme .metric-help-panel {
+            color: rgba(14, 31, 51, 0.82);
+        }
+
+        body.glass-theme .metric-card .metric-value {
+            color: #0c1727;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        body.glass-theme .metric-card .metric-subvalue {
+            color: #0c1727;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        body.glass-theme #theme-toggle,
+        body.glass-theme #glass-toggle {
+            border-radius: 999px;
+        }
+
+        body.glass-theme .metric-card {
+            border-radius: 24px;
+        }
+
+        body.glass-theme .btn-action {
+            border-radius: 18px;
+        }
+
+        body.dark-theme.glass-theme {
+            --bg: radial-gradient(circle at top left, rgba(70, 98, 140, 0.26), transparent 28%),
+                  radial-gradient(circle at 85% 10%, rgba(76, 126, 160, 0.18), transparent 22%),
+                  radial-gradient(circle at 20% 90%, rgba(110, 88, 150, 0.18), transparent 25%),
+                  linear-gradient(135deg, #1a1f29 0%, #11161f 55%, #0b1018 100%);
+            --text: #f5f7fb;
+            --text-muted: #bac6d8;
+            --border: rgba(255, 255, 255, 0.22);
+            --card-bg: rgba(255, 255, 255, 0.12);
+            --accent: #f5f7fb;
+            --success: #d4e1f2;
+            --danger: #dbe5f3;
+
+            --burn: #f5f7fb;
+            --frost: #d3deee;
+            --nf: #b6c5db;
+        }
+
+        @media (min-width: 641px) and (max-width: 900px) {
+            .container {
+                max-width: 560px;
+            }
+
+            .brand {
+                font-size: 2.25rem;
+            }
+
+            .metric-card .metric-value {
+                font-size: 2rem;
+            }
+        }
+
+        .score-panel {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .score-panel.compact {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            text-align: left;
+        }
+
+        .metric-card {
+            border: 2px solid var(--border);
+            padding: 10px 12px;
+            min-height: 104px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .metric-stack + .metric-stack {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .metric-card .metric-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: var(--text-muted);
+        }
+
+        .metric-card .metric-value {
+            display: block;
+            font-size: 1.9rem;
+            line-height: 1.1;
+            font-weight: 900;
+            margin-top: 8px;
+        }
+
+        .metric-card .metric-subvalue {
+            display: block;
+            font-size: 0.95rem;
+            line-height: 1.1;
+            font-weight: 900;
+            margin-top: 8px;
+        }
+
+        .metric-card .metric-subvalue-label {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: var(--text-muted);
+        }
+
+        .metric-help {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 2px;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .metric-help .question-mark {
+            display: inline-flex;
+            width: 16px;
+            height: 16px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            line-height: 1;
+        }
+
+        .metric-help-panel {
+            display: none;
+            margin-top: 6px;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .metric-help-panel.open {
+            display: block;
+        }
+
+        .metric-formula {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .intensity-panel {
+            margin-top: 12px;
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            min-height: 0;
+        }
+
+        .intensity-panel .metric-subvalue {
+            margin-top: 4px;
+            font-size: 1.6rem;
+        }
+
+        .bsu-value {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin: 10px 0;
+        }
+
+        .bsu-label {
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .label-wrap .title {
+            font-size: 0.9rem;
+            font-weight: 900;
+            display: block;
+        }
+
+        .label-wrap .factor {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            width: 120px;
+            accent-color: var(--text);
+        }
+
+        .val-bubble {
+            border: 2px solid var(--border);
+            padding: 5px 10px;
+            font-weight: 900;
+            min-width: 45px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .gauge-container {
+            height: 15px;
+            background: #eee;
+            border: 2px solid var(--border);
+            margin: 25px 0;
+            display: flex;
+        }
+
+        body.dark-theme .gauge-container { background: #333; }
+
+        .gauge-segment { height: 100%; border-right: 1px solid var(--border); }
+        .gauge-segment:last-child { border-right: none; }
+
+        .projections-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .proj-card {
+            border: 2px solid var(--border);
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .proj-card .val {
+            font-size: 2rem;
+            font-weight: 900;
+            display: block;
+        }
+
+        .proj-card .lab {
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .breakdown-table th, .breakdown-table td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .breakdown-table th {
+            background: #f0f0f0;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        body.dark-theme .breakdown-table th { background: #2a2a2a; }
+
+        .btn-action {
+            width: 50%;
+            background: var(--text);
+            color: var(--bg);
+            border: 2px solid var(--border);
+            padding: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .share-copy {
+            margin-top: 14px;
+            padding: 14px 14px 14px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            border-left: 5px solid var(--text);
+            border-radius: 18px 18px 18px 6px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.045), rgba(0, 0, 0, 0.02));
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .share-copy.share-data {
+            border-left-color: #1f4b99;
+            background: linear-gradient(180deg, rgba(31, 75, 153, 0.10), rgba(31, 75, 153, 0.04));
+        }
+
+        .share-copy.share-app {
+            border-left-color: #7a3ea1;
+            background: linear-gradient(180deg, rgba(122, 62, 161, 0.10), rgba(122, 62, 161, 0.04));
+        }
+
+        .share-copy.open {
+            display: block;
+        }
+
+        .share-copy .share-title {
+            display: block;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+            opacity: 0.75;
+        }
+
+        .share-copy.share-data .share-title {
+            color: #24364d;
+        }
+
+        .share-copy.share-app .share-title {
+            color: #7a3ea1;
+        }
+
+        .share-copy .share-link {
+            word-break: break-all;
+        }
+
+        .share-copy .share-body {
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        .share-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .share-actions .btn-action {
+            width: 100%;
+            margin-top: 0;
+        }
+
+        .btn-action:hover {
+            opacity: 0.8;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<input type="checkbox" id="gate-toggle" class="gate-toggle" aria-hidden="true">
+<div class="intro-screen" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+    <div class="intro-shell">
+        <div class="intro-card">
+            <div class="intro-title" id="intro-title">Clinical Research Disclosure</div>
+            <div class="intro-text">
+                <p>STAIR is a planning tool derived from a Canadian provincial registry review of burns, frostbite, and necrotizing fasciitis admissions spanning 2004-2024.</p>
+                <p>The app summarizes comparative resource intensity for institutional planning and funding discussions. It is a research and administrative aid, not a bedside decision tool.</p>
+                <p>The underlying analysis uses PCA-derived contrast-specific weighting to compare hospital stay, ICU use, procedures, and transfusion burden across the three cohorts.</p>
+                <p>No patient-identifiable data is entered or transmitted from this device.</p>
+            </div>
+        </div>
+    </div>
+    <label for="gate-toggle" class="intro-continue-btn">Continue</label>
+</div>
+
+<div class="container">
+    <header>
+        <h1 class="brand">STAIR</h1>
+        <div class="tagline">Soft-Tissue Resource Intensity Calculator</div>
+        <button id="theme-toggle">Dark Mode</button>
+        <button id="glass-toggle">Glass Mode</button>
+    </header>
+
+    <div class="card">
+        <div class="input-group">
+            <div class="input-row">
+                <div class="label-wrap">
+                    <span class="title">Burn Injury Cases</span>
+                    <span class="factor">Unit Intensity: 1.00</span>
+                </div>
+                <div class="input-wrap">
+                    <input type="range" id="burnIn" min="0" max="100" value="10" oninput="update()">
+                    <span class="val-bubble" id="burnVal">10</span>
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="label-wrap">
+                    <span class="title">Frostbite Cases</span>
+                    <span class="factor">Unit Intensity: 0.62</span>
+                </div>
+                <div class="input-wrap">
+                    <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
+                    <span class="val-bubble" id="frostVal">5</span>
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="label-wrap">
+                    <span class="title">Necrotizing Fasciitis Cases</span>
+                    <span class="factor">Unit Intensity: 1.80</span>
+                </div>
+                <div class="input-wrap">
+                    <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
+                    <span class="val-bubble" id="nfVal">2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-panel compact">
+            <div class="metric-card">
+                <div class="metric-stack">
+                    <span class="metric-label">Actual Daily Beds</span>
+                    <span class="metric-value" id="dailyBeds">0</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-stack">
+                    <span class="metric-help" id="weightedHelp" role="button" tabindex="0" aria-expanded="false" aria-controls="weightedHelpPanel">
+                        <span class="question-mark">?</span>
+                        Resource-Weighted Beds
+                    </span>
+                    <span class="metric-value" id="weightedBeds">0</span>
+                </div>
+                <div class="metric-help-panel" id="weightedHelpPanel">
+                    A weighted case-mix score reflecting relative resource burden.
+                    Formula: Burn x 1.00 + Frostbite x 0.62 + Necrotizing Fasciitis x 1.80.
+                </div>
+            </div>
+        </div>
+
+        <div class="gauge-container">
+            <div id="burnBar" class="gauge-segment" style="background: #333"></div>
+            <div id="frostBar" class="gauge-segment" style="background: #666"></div>
+            <div id="nfBar" class="gauge-segment" style="background: #999"></div>
+        </div>
+
+        <div class="projections-grid">
+            <div class="proj-card">
+                <span class="lab">Projected Monthly Bed-Days</span>
+                <span class="val" id="monthlyProjection">0</span>
+            </div>
+            <div class="proj-card">
+                <span class="lab">Projected Annual Bed-Days</span>
+                <span class="val" id="annualProjection">0</span>
+            </div>
+        </div>
+
+        <div class="share-actions">
+            <button class="btn-action" id="shareDataBtn" type="button">Share Data</button>
+            <button class="btn-action" id="shareAppBtn" type="button">Share App</button>
+        </div>
+
+        <div class="share-copy" id="shareCopy" aria-live="polite"></div>
+
+    </div>
+
+    <footer>
+        Soft-Tissue Adjustment Intensity Ratio (STAIR) | Companion to STAIR-derivation study<br>
+        Weights updated to the PCA-derived contrast-specific intensity factors.<br>
+        <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STAIR%20app">Questions?</a><br>
+    </footer>
+</div>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const glassToggle = document.getElementById('glass-toggle');
+    const gateToggle = document.getElementById('gate-toggle');
+
+    function syncThemeButtons() {
+        const dark = document.body.classList.contains('dark-theme');
+        const glass = document.body.classList.contains('glass-theme');
+
+        if (!glass && !dark) {
+            themeToggle.innerText = 'Dark Mode';
+            glassToggle.innerText = 'Glass Mode';
+            return;
+        }
+
+        if (!glass && dark) {
+            themeToggle.innerText = 'Light Mode';
+            glassToggle.innerText = 'Glass Mode';
+            return;
+        }
+
+        if (glass && !dark) {
+            themeToggle.innerText = 'Dark Mode';
+            glassToggle.innerText = 'Glass Light';
+            return;
+        }
+
+        themeToggle.innerText = 'Light Mode';
+        glassToggle.innerText = 'Glass Dark';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const glass = document.body.classList.contains('glass-theme');
+        const dark = document.body.classList.contains('dark-theme');
+
+        if (glass) {
+            if (dark) {
+                document.body.classList.remove('dark-theme');
+            } else {
+                document.body.classList.add('dark-theme');
+            }
+        } else {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        syncThemeButtons();
+    });
+
+    glassToggle.addEventListener('click', () => {
+        const glass = document.body.classList.contains('glass-theme');
+        if (glass) {
+            document.body.classList.remove('glass-theme', 'dark-theme');
+        } else {
+            document.body.classList.add('glass-theme');
+        }
+        syncThemeButtons();
+    });
+
+    syncThemeButtons();
+    gateToggle.checked = false;
+
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.62, NF: 1.80 };
+    const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
+    const BASE_LOS = 11.4;
+    const weightedHelp = document.getElementById('weightedHelp');
+    const weightedHelpPanel = document.getElementById('weightedHelpPanel');
+    const shareDataBtn = document.getElementById('shareDataBtn');
+    const shareAppBtn = document.getElementById('shareAppBtn');
+    const shareCopy = document.getElementById('shareCopy');
+    const hostedUrl = 'https://jpg123.github.io/STAIR-app/STAIR-app.html';
+
+    function toggleWeightedHelp() {
+        const isOpen = weightedHelpPanel.classList.toggle('open');
+        weightedHelp.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    weightedHelp.addEventListener('click', toggleWeightedHelp);
+    weightedHelp.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleWeightedHelp();
+        }
+    });
+
+    function update() {
+        const b = parseInt(document.getElementById('burnIn').value);
+        const f = parseInt(document.getElementById('frostIn').value);
+        const n = parseInt(document.getElementById('nfIn').value);
+
+        document.getElementById('burnVal').innerText = b;
+        document.getElementById('frostVal').innerText = f;
+        document.getElementById('nfVal').innerText = n;
+
+        const bLoad = b * INTENSITY_LOAD.BURN;
+        const fLoad = f * INTENSITY_LOAD.FROST;
+        const nLoad = n * INTENSITY_LOAD.NF;
+        const intensityLoad = bLoad + fLoad + nLoad;
+        const actualDailyBeds = b + f + n;
+        const monthlyProjection = Math.round(intensityLoad * BASE_LOS);
+        const annualProjection = Math.round(monthlyProjection * 12);
+
+        document.getElementById('dailyBeds').innerText = actualDailyBeds;
+        document.getElementById('weightedBeds').innerText = intensityLoad.toFixed(2);
+        document.getElementById('monthlyProjection').innerText = monthlyProjection.toLocaleString();
+        document.getElementById('annualProjection').innerText = annualProjection.toLocaleString();
+
+        if (intensityLoad > 0) {
+            document.getElementById('burnBar').style.width = (bLoad / intensityLoad * 100) + '%';
+            document.getElementById('frostBar').style.width = (fLoad / intensityLoad * 100) + '%';
+            document.getElementById('nfBar').style.width = (nLoad / intensityLoad * 100) + '%';
+        }
+
+        return { monthlyProjection, annualProjection };
+    }
+
+    function showShareCopy(title, body) {
+        shareCopy.innerHTML = '';
+        shareCopy.classList.remove('share-data', 'share-app');
+        if (title === 'Share Data') {
+            shareCopy.classList.add('share-data');
+        } else if (title === 'Share App') {
+            shareCopy.classList.add('share-app');
+        }
+        const titleEl = document.createElement('span');
+        titleEl.className = 'share-title';
+        titleEl.textContent = title;
+        const bodyEl = document.createElement('div');
+        bodyEl.className = 'share-body';
+        bodyEl.textContent = body;
+        shareCopy.appendChild(titleEl);
+        shareCopy.appendChild(bodyEl);
+        shareCopy.classList.add('open');
+    }
+
+    shareDataBtn.addEventListener('click', async () => {
+        const { monthlyProjection, annualProjection } = update();
+        const actualDailyBeds = parseInt(document.getElementById('dailyBeds').innerText, 10);
+        const weightedBeds = document.getElementById('weightedBeds').innerText;
+        const message = `STAIR finding:
+Actual daily beds = ${actualDailyBeds}
+Resource-weighted beds = ${weightedBeds}
+Projected monthly bed-days = ${monthlyProjection.toLocaleString()}
+Projected annual bed-days = ${annualProjection.toLocaleString()}`;
+        try {
+            if (navigator.share) {
+                await navigator.share({ text: message });
+            } else if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(message);
+            }
+        } catch (error) {
+            console.warn('Share Data failed', error);
+        }
+        showShareCopy('Share Data', message);
+    });
+
+    shareAppBtn.addEventListener('click', async () => {
+        const message = `STAIR
+Open the attached HTML file in your browser
+If prompted, choose "Add to Home Screen" or "Install App"
+After installation, launch it like a normal app`;
+        try {
+            if (navigator.share) {
+                const shareData = { title: 'STAIR', text: message };
+                if (window.location && window.location.href) {
+                    shareData.url = window.location.href;
+                }
+                await navigator.share(shareData);
+            }
+        } catch (error) {
+            console.warn('Share App failed', error);
+        }
+        showShareCopy('Share App', message + `\n\nHTML: ${hostedUrl}`);
+    });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch((error) => {
+                console.warn('Service worker registration failed', error);
+            });
+        });
+    }
+
+    update();
+</script>
+
+</body>
+</html>

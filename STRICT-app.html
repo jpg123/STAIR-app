@@ -873,7 +873,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title">Frostbite Cases</span>
-                    <span class="factor">Unit Intensity: 0.68</span>
+                    <span class="factor">Unit Intensity: 0.62</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -884,7 +884,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title">Necrotizing Fasciitis Cases</span>
-                    <span class="factor">Unit Intensity: 1.69</span>
+                    <span class="factor">Unit Intensity: 1.80</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
@@ -910,7 +910,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: Burn x 1.00 + Frostbite x 0.6761 + Necrotizing Fasciitis x 1.6870.
+                    Formula: Burn x 1.00 + Frostbite x 0.62 + Necrotizing Fasciitis x 1.80.
                 </div>
             </div>
         </div>
@@ -1009,7 +1009,7 @@
     syncThemeButtons();
     gateToggle.checked = false;
 
-    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.6761, NF: 1.6870 };
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.62, NF: 1.80 };
     const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
     const BASE_LOS = 11.4;
     const weightedHelp = document.getElementById('weightedHelp');

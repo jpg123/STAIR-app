@@ -841,7 +841,7 @@
             <div class="intro-text">
                 <p>STAIR is a planning tool derived from a Canadian provincial registry review of burns, frostbite, and necrotizing fasciitis admissions spanning 2004-2024.</p>
                 <p>The app summarizes comparative resource intensity for institutional planning and funding discussions. It is a research and administrative aid, not a bedside decision tool.</p>
-                <p>The underlying analysis uses PCA-derived contrast-specific weighting to compare hospital stay, ICU use, procedures, and transfusion burden across the three cohorts.</p>
+                <p>The underlying analysis uses frozen, FAMD-derived cohort factors to communicate differences in hospital stay, ICU use, procedures, transfusion burden and related resource domains across the three diagnosis groups. The app does not refit FAMD or calculate patient-level predictions.</p>
                 <p>No patient-identifiable data is entered or transmitted from this device.</p>
             </div>
         </div>
@@ -923,11 +923,11 @@
 
         <div class="projections-grid">
             <div class="proj-card">
-                <span class="lab">Projected Monthly Bed-Days</span>
+                <span class="lab">Relative Monthly Intensity Units</span>
                 <span class="val" id="monthlyProjection">0</span>
             </div>
             <div class="proj-card">
-                <span class="lab">Projected Annual Bed-Days</span>
+                <span class="lab">Relative Annual Intensity Units</span>
                 <span class="val" id="annualProjection">0</span>
             </div>
         </div>
@@ -943,7 +943,7 @@
 
     <footer>
         Soft-Tissue Adjustment Intensity Ratio (STAIR) | Companion to STAIR-derivation study<br>
-        Weights updated to the PCA-derived contrast-specific intensity factors.<br>
+        Frozen FAMD-derived cohort factors; knowledge-translation use only.<br>
         <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STAIR%20app">Questions?</a><br>
     </footer>
 </div>
@@ -1011,7 +1011,6 @@
 
     const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.62, NF: 1.80 };
     const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
-    const BASE_LOS = 11.4;
     const weightedHelp = document.getElementById('weightedHelp');
     const weightedHelpPanel = document.getElementById('weightedHelpPanel');
     const shareDataBtn = document.getElementById('shareDataBtn');
@@ -1046,13 +1045,13 @@
         const nLoad = n * INTENSITY_LOAD.NF;
         const intensityLoad = bLoad + fLoad + nLoad;
         const actualDailyBeds = b + f + n;
-        const monthlyProjection = Math.round(intensityLoad * BASE_LOS);
-        const annualProjection = Math.round(monthlyProjection * 12);
+        const monthlyProjection = intensityLoad;
+        const annualProjection = intensityLoad * 12;
 
         document.getElementById('dailyBeds').innerText = actualDailyBeds;
         document.getElementById('weightedBeds').innerText = intensityLoad.toFixed(2);
-        document.getElementById('monthlyProjection').innerText = monthlyProjection.toLocaleString();
-        document.getElementById('annualProjection').innerText = annualProjection.toLocaleString();
+        document.getElementById('monthlyProjection').innerText = monthlyProjection.toFixed(2);
+        document.getElementById('annualProjection').innerText = annualProjection.toFixed(2);
 
         if (intensityLoad > 0) {
             document.getElementById('burnBar').style.width = (bLoad / intensityLoad * 100) + '%';

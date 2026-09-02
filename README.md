@@ -1,7 +1,33 @@
 # STAIR App
 
-Open [`STAIR-app.html`](./STAIR-app.html) directly to use the app.
+STAIR (Soft-Tissue Adjustment Intensity Ratio) is a browser-based knowledge-translation tool for communicating diagnosis-specific hospital resource requirements across burn, frostbite and necrotizing fasciitis admissions.
 
-This app is the companion calculator for the standalone STAIR-derivation study in `/Users/jg/analysis/HRU/FAMD-analysis`.
-It is a single-page HTML calculator for estimating resource intensity from soft-tissue injury case mix and should be
-treated as downstream of the study folder rather than as an independent HRU artifact.
+Use the live app at <https://jpg123.github.io/STAIR-app/STAIR-app.html> or open [`STAIR-app.html`](./STAIR-app.html) locally.
+
+## What the app does
+
+The app applies frozen, burn-referenced cohort intensity factors to a case mix and reports relative intensity units:
+
+`STAIR case-mix burden = (burn cases × 1.00) + (frostbite cases × 0.62) + (necrotizing fasciitis cases × 1.80)`
+
+The factors are derived from the study's FAMD-based cohort-level resource-intensity analysis. Burn is the reference level of 1.00. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
+
+## Inputs represented by the derivation
+
+The underlying resource-intensity construct uses prespecified admission-level and utilization variables: hospital length of stay, ICU admission, ICU days, procedure count, PRBC transfusion exposure, PRBC units, amputation, grafting and free-tissue transfer. The app displays the resulting frozen cohort factors and does not refit FAMD or calculate new weights in the browser.
+
+## Interpretation and limitations
+
+- This is a cohort-level planning and knowledge-translation tool.
+- It must not be used for individual triage, bedside prediction, clinical decision-making or funding allocation.
+- The factors were derived from a Canadian provincial registry of 1,680 adult admissions from 2004-2024.
+- The derivation is observational and may reflect measured and unmeasured differences in diagnosis, case mix and local practice.
+- External validation, prospective evaluation and stakeholder/workflow testing are required before operational use.
+
+## Reproducibility
+
+The app is intentionally static and uses frozen factors so that the displayed values do not change when the app is opened. The study submission package documents the derivation, cohort comparisons, diagnostics and limitations. Changes to the factors require a new offline derivation, versioned artifact and corresponding update to the manuscript and supplemental material.
+
+## License and contact
+
+This repository is provided for research and educational knowledge translation. Please contact the corresponding study team before adapting the factors for institutional use.

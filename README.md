@@ -12,19 +12,19 @@ The interface is available in English, French and Spanish; these are the only us
 
 The app applies frozen, burn-referenced cohort intensity factors to a case mix and reports relative intensity units:
 
-`STAIR case-mix burden = (burn cases × 1.00) + (frostbite cases × 0.62) + (necrotizing fasciitis cases × 1.80)`
+`STAIR case-mix burden = (burn cases × 1.000) + (frostbite cases × 0.661) + (necrotizing fasciitis cases × 0.700)`
 
-The factors are frozen cohort-level outputs from the offline STAIR resource-intensity derivation. Burn is the reference level of 1.00. The app does not claim to perform FAMD, PCA or any other re-estimation in the browser. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
+The factors are frozen cohort-level outputs from the versioned offline FAMD derivation `STAIR-FAMD-2026-09-02-v1`. Burn is the reference level of 1.000. The app does not refit or re-estimate FAMD in the browser. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
 
 ## Inputs represented by the derivation
 
-The underlying resource-intensity construct uses prespecified admission-level and utilization variables: hospital length of stay, ICU admission, ICU days, procedure count, PRBC transfusion exposure, PRBC units, amputation, grafting and free-tissue transfer. The app displays frozen cohort factors and does not refit or re-estimate weights in the browser. The exact offline derivation method, preprocessing and validation must be documented with the accompanying research package.
+The underlying resource-intensity construct uses 8 prespecified variables: hospital length of stay, ICU admission, ICU days, procedure count, PRBC units, amputation, grafting and free-tissue transfer. Numeric missing values were median-imputed and categorical missing values were mode-imputed; FAMD handled mixed-data scaling. The first component was oriented to correlate positively with length of stay, shifted to a common positive scale and summarized by the mean within each cohort divided by the Burn mean. The app displays frozen cohort factors and does not refit or re-estimate weights in the browser.
 
 ## Interpretation and limitations
 
 - This is a cohort-level planning and knowledge-translation tool.
 - It must not be used for individual triage, bedside prediction, clinical decision-making or funding allocation.
-- The factors were derived from a Canadian provincial registry of 1,680 adult admissions from 2004-2024.
+- The factors were derived from a Canadian provincial registry of 1,636 adult admissions from 2004-2024.
 - The derivation is observational and may reflect measured and unmeasured differences in diagnosis, case mix and local practice.
 - External validation, prospective evaluation and stakeholder/workflow testing are required before operational use.
 

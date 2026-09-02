@@ -921,6 +921,23 @@
             <div id="nfBar" class="gauge-segment" style="background: #999"></div>
         </div>
 
+        <details class="card" style="margin-top:20px; padding:16px;">
+            <summary><strong>Derivation and scoring details</strong></summary>
+            <p>STAIR is a frozen, cohort-level FAMD-derived index. The app does not refit the model. For the pooled derivation, standardized inputs are combined as <code>STAIR = Σ(weight × z-score)</code>.</p>
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+                <thead><tr><th style="text-align:left; padding:6px; border-bottom:1px solid var(--border);">Input</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">Pooled weight</th></tr></thead>
+                <tbody>
+                    <tr><td>Hospital length of stay</td><td style="text-align:right;">0.2095</td></tr>
+                    <tr><td>ICU admission</td><td style="text-align:right;">0.1884</td></tr>
+                    <tr><td>ICU days</td><td style="text-align:right;">0.0686</td></tr>
+                    <tr><td>Procedure count</td><td style="text-align:right;">0.0146</td></tr>
+                    <tr><td>PRBC transfusion exposure</td><td style="text-align:right;">0.2591</td></tr>
+                    <tr><td>PRBC units</td><td style="text-align:right;">0.2598</td></tr>
+                </tbody>
+            </table>
+            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.62, Necrotizing Fasciitis 1.80) are separate burn-referenced cohort summaries. They are not individual patient predictions. The current case-mix display applies those frozen factors to entered cohort counts.</p>
+        </details>
+
         <div class="projections-grid">
             <div class="proj-card">
                 <span class="lab">Relative Monthly Intensity Units</span>

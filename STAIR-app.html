@@ -953,7 +953,7 @@
                     <tr><td>TBSA, %</td><td style="text-align:right;">825; 0.00–93.50</td><td style="text-align:right;">119; 0.00–53.00</td><td style="text-align:right;">502; 0.25–35.00</td></tr>
                     <tr><td>Procedures: admissions with ≥1; mean (range)</td><td style="text-align:right;">460; 2 (1–15)</td><td style="text-align:right;">103; 1 (1–5)</td><td style="text-align:right;">559; 2 (1–10)</td></tr>
                     <tr><td>Transfusion</td><td style="text-align:right;">72; 8.2</td><td style="text-align:right;">1; 0.5</td><td style="text-align:right;">191; 33.6</td></tr>
-                    <tr><td>PRBC units among admissions with recorded units</td><td style="text-align:right;">72; 14 (1–94)</td><td style="text-align:right;">0; not recorded</td><td style="text-align:right;">191; 8 (1–51)</td></tr>
+                    <tr><td>PRBC units among admissions with recorded units</td><td style="text-align:right;">72; 14 (1–94)</td><td style="text-align:right;">1; 7 (7–7)</td><td style="text-align:right;">191; 8 (1–51)</td></tr>
                 </tbody>
             </table>
         </details>
@@ -1006,7 +1006,7 @@
     const gateToggle = document.getElementById('gate-toggle');
     gateToggle.checked = false;
 
-    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.799192, NF: 1.279605 };
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.800201, NF: 1.279815 };
     const locales = {
         en: { tagline:'Soft-Tissue Resource Intensity Tool', burn:'Burn Injury Cases', frost:'Frostbite Cases', nf:'Necrotizing Fasciitis Cases', actual:'Cases Entered', weighted:'Resource-Weighted Intensity', monthly:'Relative Monthly Intensity Units', annual:'Relative Annual Intensity Units', unit:'Unit Intensity', shareData:'Share Data', shareApp:'Share App', shareDataTitle:'Share Data', shareAppTitle:'Share App', copied:'Copied to clipboard' },
         fr: { tagline:'Outil d’intensité des ressources des lésions des tissus mous', burn:'Cas de brûlures', frost:'Cas de gelures', nf:'Cas de fasciite nécrosante', actual:'Cas saisis', weighted:'Intensité pondérée des ressources', monthly:'Unités d’intensité mensuelle relative', annual:'Unités d’intensité annuelle relative', unit:'Intensité unitaire', shareData:'Partager les données', shareApp:'Partager l’application', shareDataTitle:'Données partagées', shareAppTitle:'Application partagée', copied:'Copié dans le presse-papiers' },

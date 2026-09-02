@@ -10,6 +10,8 @@ The interface is available in English, French and Spanish; these are the only us
 
 ## What the app does
 
+The app includes a fixed descriptive Table 1 from the canonical cohort dataset. It is a reference table and does not recalculate when case counts are changed. The interactive planning display applies the frozen cohort factors only.
+
 The app applies frozen, burn-referenced cohort intensity factors to a case mix and reports relative intensity units:
 
 `STAIR case-mix burden = (burn cases × 1.00) + (frostbite cases × 0.79) + (necrotizing fasciitis cases × 1.27)`

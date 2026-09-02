@@ -942,6 +942,21 @@
         </div>
 
         <details class="card" style="margin-top:20px; padding:16px;">
+            <summary><strong>Table 1. Descriptive cohort data</strong></summary>
+            <p style="font-size:0.8rem; color:var(--text-muted);">These values are fixed summaries from the canonical dataset and do not change when case counts are entered.</p>
+            <table style="width:100%; border-collapse:collapse; font-size:0.78rem;">
+                <thead><tr><th style="text-align:left; padding:6px; border-bottom:1px solid var(--border);">Measure</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">Burn<br>(n=875)</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">Frostbite<br>(n=192)</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">NF<br>(n=569)</th></tr></thead>
+                <tbody>
+                    <tr><td>ICU admission, %</td><td style="text-align:right;">34.7</td><td style="text-align:right;">0.0</td><td style="text-align:right;">42.7</td></tr>
+                    <tr><td>Length of stay, mean days</td><td style="text-align:right;">20.77</td><td style="text-align:right;">25.50</td><td style="text-align:right;">35.78</td></tr>
+                    <tr><td>ICU days, mean</td><td style="text-align:right;">4.37</td><td style="text-align:right;">0.00</td><td style="text-align:right;">9.35</td></tr>
+                    <tr><td>Procedures, mean count</td><td style="text-align:right;">1.14</td><td style="text-align:right;">0.69</td><td style="text-align:right;">2.43</td></tr>
+                    <tr><td>PRBC units, mean</td><td style="text-align:right;">1.15</td><td style="text-align:right;">0.00</td><td style="text-align:right;">2.64</td></tr>
+                </tbody>
+            </table>
+        </details>
+
+        <details class="card" style="margin-top:20px; padding:16px;">
             <summary><strong>Derivation and scoring details</strong></summary>
             <p>STAIR has two separate steps. First, pooled FAMD was fit offline to 8 resource variables. The first dimension summarizes shared resource-intensity patterns; the normalized absolute first-dimension loadings are shown below. Second, each diagnosis factor is the mean shifted FAMD score for that cohort divided by the mean Burn score. The app applies only those frozen cohort factors to entered case counts and does not calculate patient-level scores.</p>
             <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">

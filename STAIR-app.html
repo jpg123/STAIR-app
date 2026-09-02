@@ -930,7 +930,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: Burn x 1.000 + Frostbite x 0.689 + Necrotizing Fasciitis x 0.834.
+                    Formula: (Burn cases × 1.00) + (Frostbite cases × 0.69) + (NF cases × 0.83).
                 </div>
             </div>
         </div>
@@ -943,19 +943,19 @@
 
         <details class="card" style="margin-top:20px; padding:16px;">
             <summary><strong>Derivation and scoring details</strong></summary>
-            <p>STAIR is a frozen, cohort-level resource-intensity index. The app does not refit the offline derivation. Where component weights are supplied, standardized inputs are combined as <code>STAIR = Σ(weight × z-score)</code>.</p>
+            <p>STAIR has two separate steps. First, pooled FAMD was fit offline to 8 resource variables. The first dimension summarizes shared resource-intensity patterns; the normalized absolute first-dimension loadings are shown below. Second, each diagnosis factor is the mean shifted FAMD score for that cohort divided by the mean Burn score. The app applies only those frozen cohort factors to entered case counts and does not calculate patient-level scores.</p>
             <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
                 <thead><tr><th style="text-align:left; padding:6px; border-bottom:1px solid var(--border);">Input</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">Pooled weight</th></tr></thead>
                 <tbody>
-                    <tr><td>Hospital length of stay</td><td style="text-align:right;">0.2095</td></tr>
-                    <tr><td>ICU admission</td><td style="text-align:right;">0.1884</td></tr>
-                    <tr><td>ICU days</td><td style="text-align:right;">0.0686</td></tr>
-                    <tr><td>Procedure count</td><td style="text-align:right;">0.0146</td></tr>
-                    <tr><td>PRBC transfusion exposure</td><td style="text-align:right;">0.2591</td></tr>
-                    <tr><td>PRBC units</td><td style="text-align:right;">0.2598</td></tr>
+                    <tr><td>Hospital length of stay</td><td style="text-align:right;">0.33</td></tr>
+                    <tr><td>ICU admission</td><td style="text-align:right;">0.23</td></tr>
+                    <tr><td>ICU days</td><td style="text-align:right;">0.27</td></tr>
+                    <tr><td>Procedure count</td><td style="text-align:right;">0.04</td></tr>
+                    <tr><td>PRBC units</td><td style="text-align:right;">0.12</td></tr>
+                    <tr><td>Amputation, grafting and free-tissue transfer</td><td style="text-align:right;">0.00 each</td></tr>
                 </tbody>
             </table>
-            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.000, Frostbite 0.689, Necrotizing Fasciitis 0.834) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains a separate resource variable in the derivation. These factors are not individual patient predictions.</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.69, Necrotizing Fasciitis 0.83) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains separate from NF diagnosis. These factors are not individual patient predictions.</p>
         </details>
 
         <div class="projections-grid">

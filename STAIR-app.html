@@ -893,7 +893,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title" id="frostLabel">Frostbite Cases</span>
-                    <span class="factor" id="frostFactor">Unit Intensity: 0.661</span>
+                    <span class="factor" id="frostFactor">Unit Intensity: 0.744</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -904,7 +904,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title" id="nfLabel">Necrotizing Fasciitis Cases</span>
-                    <span class="factor" id="nfFactor">Unit Intensity: 0.700</span>
+                    <span class="factor" id="nfFactor">Unit Intensity: 1.524</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
@@ -930,7 +930,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: Burn x 1.000 + Frostbite x 0.661 + Necrotizing Fasciitis x 0.700.
+                    Formula: Burn x 1.000 + Frostbite x 0.744 + Necrotizing Fasciitis x 1.524.
                 </div>
             </div>
         </div>
@@ -955,7 +955,7 @@
                     <tr><td>PRBC units</td><td style="text-align:right;">0.2598</td></tr>
                 </tbody>
             </table>
-            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.000, Frostbite 0.661, Necrotizing Fasciitis 0.700) are separate burn-referenced cohort summaries from the versioned FAMD artifact. They are not individual patient predictions. The current case-mix display applies these frozen factors to entered cohort counts.</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.000, Frostbite 0.744, Necrotizing Fasciitis 1.524) are separate burn-referenced cohort summaries from the versioned FAMD artifact. They are not individual patient predictions. The current case-mix display applies these frozen factors to entered cohort counts.</p>
         </details>
 
         <div class="projections-grid">
@@ -989,7 +989,7 @@
     const gateToggle = document.getElementById('gate-toggle');
     gateToggle.checked = false;
 
-    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.661112, NF: 0.700373 };
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.744103, NF: 1.52422 };
     const locales = {
         en: { tagline:'Soft-Tissue Resource Intensity Tool', burn:'Burn Injury Cases', frost:'Frostbite Cases', nf:'Necrotizing Fasciitis Cases', actual:'Cases Entered', weighted:'Resource-Weighted Intensity', monthly:'Relative Monthly Intensity Units', annual:'Relative Annual Intensity Units', unit:'Unit Intensity', shareData:'Share Data', shareApp:'Share App', shareDataTitle:'Share Data', shareAppTitle:'Share App', copied:'Copied to clipboard' },
         fr: { tagline:'Outil d’intensité des ressources des lésions des tissus mous', burn:'Cas de brûlures', frost:'Cas de gelures', nf:'Cas de fasciite nécrosante', actual:'Cas saisis', weighted:'Intensité pondérée des ressources', monthly:'Unités d’intensité mensuelle relative', annual:'Unités d’intensité annuelle relative', unit:'Intensité unitaire', shareData:'Partager les données', shareApp:'Partager l’application', shareDataTitle:'Données partagées', shareAppTitle:'Application partagée', copied:'Copié dans le presse-papiers' },
@@ -1000,7 +1000,7 @@
         currentLanguage = locales[lang] ? lang : 'en'; localStorage.setItem('stair-language', currentLanguage);
         const s = locales[currentLanguage];
         for (const [id,key] of Object.entries({tagline:'tagline',burnLabel:'burn',frostLabel:'frost',nfLabel:'nf',actualLabel:'actual',weightedLabel:'weighted',monthlyLabel:'monthly',annualLabel:'annual'})) document.getElementById(id).textContent = s[key];
-        document.getElementById('burnFactor').textContent = `${s.unit}: 1.000`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.661`; document.getElementById('nfFactor').textContent = `${s.unit}: 0.700`;
+        document.getElementById('burnFactor').textContent = `${s.unit}: 1.000`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.744`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.524`;
         document.getElementById('shareDataBtn').textContent = s.shareData; document.getElementById('shareAppBtn').textContent = s.shareApp;
         document.documentElement.lang = currentLanguage;
     }

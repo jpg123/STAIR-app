@@ -4,6 +4,10 @@ STAIR (Soft-Tissue Adjustment Intensity Ratio) is a browser-based knowledge-tran
 
 Use the live app at <https://jpg123.github.io/STAIR-app/STAIR-app.html> or open [`STAIR-app.html`](./STAIR-app.html) locally.
 
+## Languages and sharing
+
+The interface is available in English, French and Spanish. The selected language is saved locally in the browser. **Share Data** creates a text summary of the entered case mix, weighted intensity and repository link. **Share App** shares the hosted app URL. Where the browser supports the Web Share API, the native share sheet is used; otherwise the app copies the share text to the clipboard. No patient-identifiable information should be entered.
+
 ## What the app does
 
 The app applies frozen, burn-referenced cohort intensity factors to a case mix and reports relative intensity units:

@@ -830,6 +830,8 @@
             border-top: 1px solid var(--border);
             padding-top: 20px;
         }
+        .language-switcher { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+        .language-switcher button { border:1px solid var(--border); background:var(--card-bg); color:var(--text); padding:5px 8px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -852,7 +854,12 @@
 <div class="container">
     <header>
         <h1 class="brand">STAIR</h1>
-        <div class="tagline">Soft-Tissue Resource Intensity Calculator</div>
+        <div class="tagline" id="tagline">Soft-Tissue Resource Intensity Tool</div>
+        <div class="language-switcher" role="group" aria-label="Language">
+            <button type="button" data-language="en">English</button>
+            <button type="button" data-language="fr">Français</button>
+            <button type="button" data-language="es">Español</button>
+        </div>
         <button id="theme-toggle">Dark Mode</button>
         <button id="glass-toggle">Glass Mode</button>
     </header>
@@ -861,8 +868,8 @@
         <div class="input-group">
             <div class="input-row">
                 <div class="label-wrap">
-                    <span class="title">Burn Injury Cases</span>
-                    <span class="factor">Unit Intensity: 1.00</span>
+                    <span class="title" id="burnLabel">Burn Injury Cases</span>
+                    <span class="factor" id="burnFactor">Unit Intensity: 1.00</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="burnIn" min="0" max="100" value="10" oninput="update()">
@@ -872,8 +879,8 @@
 
             <div class="input-row">
                 <div class="label-wrap">
-                    <span class="title">Frostbite Cases</span>
-                    <span class="factor">Unit Intensity: 0.62</span>
+                    <span class="title" id="frostLabel">Frostbite Cases</span>
+                    <span class="factor" id="frostFactor">Unit Intensity: 0.62</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -883,8 +890,8 @@
 
             <div class="input-row">
                 <div class="label-wrap">
-                    <span class="title">Necrotizing Fasciitis Cases</span>
-                    <span class="factor">Unit Intensity: 1.80</span>
+                    <span class="title" id="nfLabel">Necrotizing Fasciitis Cases</span>
+                    <span class="factor" id="nfFactor">Unit Intensity: 1.80</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
@@ -896,7 +903,7 @@
         <div class="score-panel compact">
             <div class="metric-card">
                 <div class="metric-stack">
-                    <span class="metric-label">Actual Daily Beds</span>
+                    <span class="metric-label" id="actualLabel">Cases Entered</span>
                     <span class="metric-value" id="dailyBeds">0</span>
                 </div>
             </div>
@@ -904,7 +911,7 @@
                 <div class="metric-stack">
                     <span class="metric-help" id="weightedHelp" role="button" tabindex="0" aria-expanded="false" aria-controls="weightedHelpPanel">
                         <span class="question-mark">?</span>
-                        Resource-Weighted Beds
+                        <span id="weightedLabel">Resource-Weighted Intensity</span>
                     </span>
                     <span class="metric-value" id="weightedBeds">0</span>
                 </div>
@@ -940,11 +947,11 @@
 
         <div class="projections-grid">
             <div class="proj-card">
-                <span class="lab">Relative Monthly Intensity Units</span>
+                <span class="lab" id="monthlyLabel">Relative Monthly Intensity Units</span>
                 <span class="val" id="monthlyProjection">0</span>
             </div>
             <div class="proj-card">
-                <span class="lab">Relative Annual Intensity Units</span>
+                <span class="lab" id="annualLabel">Relative Annual Intensity Units</span>
                 <span class="val" id="annualProjection">0</span>
             </div>
         </div>
@@ -1027,6 +1034,21 @@
     gateToggle.checked = false;
 
     const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.62, NF: 1.80 };
+    const locales = {
+        en: { tagline:'Soft-Tissue Resource Intensity Tool', burn:'Burn Injury Cases', frost:'Frostbite Cases', nf:'Necrotizing Fasciitis Cases', actual:'Cases Entered', weighted:'Resource-Weighted Intensity', monthly:'Relative Monthly Intensity Units', annual:'Relative Annual Intensity Units', unit:'Unit Intensity', shareData:'Share Data', shareApp:'Share App', shareDataTitle:'Share Data', shareAppTitle:'Share App', copied:'Copied to clipboard' },
+        fr: { tagline:'Outil d’intensité des ressources des lésions des tissus mous', burn:'Cas de brûlures', frost:'Cas de gelures', nf:'Cas de fasciite nécrosante', actual:'Cas saisis', weighted:'Intensité pondérée des ressources', monthly:'Unités d’intensité mensuelle relative', annual:'Unités d’intensité annuelle relative', unit:'Intensité unitaire', shareData:'Partager les données', shareApp:'Partager l’application', shareDataTitle:'Données partagées', shareAppTitle:'Application partagée', copied:'Copié dans le presse-papiers' },
+        es: { tagline:'Herramienta de intensidad de recursos de lesiones de tejidos blandos', burn:'Casos de quemaduras', frost:'Casos de congelación', nf:'Casos de fascitis necrosante', actual:'Casos introducidos', weighted:'Intensidad de recursos ponderada', monthly:'Unidades de intensidad mensual relativa', annual:'Unidades de intensidad anual relativa', unit:'Intensidad unitaria', shareData:'Compartir datos', shareApp:'Compartir aplicación', shareDataTitle:'Datos compartidos', shareAppTitle:'Aplicación compartida', copied:'Copiado al portapapeles' }
+    };
+    let currentLanguage = localStorage.getItem('stair-language') || 'en';
+    function applyLanguage(lang) {
+        currentLanguage = locales[lang] ? lang : 'en'; localStorage.setItem('stair-language', currentLanguage);
+        const s = locales[currentLanguage];
+        for (const [id,key] of Object.entries({tagline:'tagline',burnLabel:'burn',frostLabel:'frost',nfLabel:'nf',actualLabel:'actual',weightedLabel:'weighted',monthlyLabel:'monthly',annualLabel:'annual'})) document.getElementById(id).textContent = s[key];
+        document.getElementById('burnFactor').textContent = `${s.unit}: 1.00`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.62`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.80`;
+        document.getElementById('shareDataBtn').textContent = s.shareData; document.getElementById('shareAppBtn').textContent = s.shareApp;
+        document.documentElement.lang = currentLanguage;
+    }
+    document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => applyLanguage(button.dataset.language)));
     const BED_MR = { BURN: 1.0, FROST: 1.29, NF: 1.61 };
     const weightedHelp = document.getElementById('weightedHelp');
     const weightedHelpPanel = document.getElementById('weightedHelpPanel');
@@ -1102,11 +1124,12 @@
         const { monthlyProjection, annualProjection } = update();
         const actualDailyBeds = parseInt(document.getElementById('dailyBeds').innerText, 10);
         const weightedBeds = document.getElementById('weightedBeds').innerText;
-        const message = `STAIR finding:
-Actual daily beds = ${actualDailyBeds}
-Resource-weighted beds = ${weightedBeds}
-Projected monthly bed-days = ${monthlyProjection.toLocaleString()}
-Projected annual bed-days = ${annualProjection.toLocaleString()}`;
+        const message = `STAIR
+Cases entered = ${actualDailyBeds}
+Resource-weighted intensity = ${weightedBeds}
+Relative monthly intensity units = ${monthlyProjection.toFixed(2)}
+Relative annual intensity units = ${annualProjection.toFixed(2)}
+${hostedUrl}`;
         try {
             if (navigator.share) {
                 await navigator.share({ text: message });
@@ -1116,14 +1139,12 @@ Projected annual bed-days = ${annualProjection.toLocaleString()}`;
         } catch (error) {
             console.warn('Share Data failed', error);
         }
-        showShareCopy('Share Data', message);
+        showShareCopy(locales[currentLanguage].shareDataTitle, message);
     });
 
     shareAppBtn.addEventListener('click', async () => {
         const message = `STAIR
-Open the attached HTML file in your browser
-If prompted, choose "Add to Home Screen" or "Install App"
-After installation, launch it like a normal app`;
+${hostedUrl}`;
         try {
             if (navigator.share) {
                 const shareData = { title: 'STAIR', text: message };
@@ -1131,13 +1152,15 @@ After installation, launch it like a normal app`;
                     shareData.url = window.location.href;
                 }
                 await navigator.share(shareData);
-            }
+            } else if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(`${message}\n${locales[currentLanguage].shareApp}`); }
         } catch (error) {
             console.warn('Share App failed', error);
         }
-        showShareCopy('Share App', message + `\n\nHTML: ${hostedUrl}`);
+        showShareCopy(locales[currentLanguage].shareAppTitle, message);
     });
 
+    applyLanguage(currentLanguage);
+    update();
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').catch((error) => {

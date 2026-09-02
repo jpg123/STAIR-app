@@ -893,7 +893,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title" id="frostLabel">Frostbite Cases</span>
-                    <span class="factor" id="frostFactor">Unit Intensity: 0.79</span>
+                    <span class="factor" id="frostFactor">Unit Intensity: 0.73</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -904,7 +904,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title" id="nfLabel">Necrotizing Fasciitis Cases</span>
-                    <span class="factor" id="nfFactor">Unit Intensity: 1.27</span>
+                    <span class="factor" id="nfFactor">Unit Intensity: 1.28</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="nfIn" min="0" max="100" value="2" oninput="update()">
@@ -930,7 +930,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: (Burn cases × 1.00) + (Frostbite cases × 0.71) + (NF cases × 1.19).
+                    Formula: (Burn cases × 1.00) + (Frostbite cases × 0.73) + (NF cases × 1.28).
                 </div>
             </div>
         </div>
@@ -950,7 +950,7 @@
                     <tr><td>ICU admission, %</td><td style="text-align:right;">34.7</td><td style="text-align:right;">0.0</td><td style="text-align:right;">42.7</td></tr>
                     <tr><td>Length of stay, mean days</td><td style="text-align:right;">20.77</td><td style="text-align:right;">25.50</td><td style="text-align:right;">35.78</td></tr>
                     <tr><td>Days_ICU, mean</td><td style="text-align:right;">4.37</td><td style="text-align:right;">0.00</td><td style="text-align:right;">3.99</td></tr>
-                    <tr><td>Procedures, mean count (range)</td><td style="text-align:right;">1 (0–99)</td><td style="text-align:right;">1 (0–5)</td><td style="text-align:right;">2 (0–10)</td></tr>
+                    <tr><td>Procedures, mean count (range)</td><td style="text-align:right;">1 (0–15)</td><td style="text-align:right;">1 (0–5)</td><td style="text-align:right;">2 (0–10)</td></tr>
                     <tr><td>PRBC units, mean (range)</td><td style="text-align:right;">1 (0–94)</td><td style="text-align:right;">0 (0–0)</td><td style="text-align:right;">3 (0–51)</td></tr>
                 </tbody>
             </table>
@@ -970,7 +970,7 @@
                     <tr><td>Amputation, grafting and free-tissue transfer</td><td style="text-align:right;">0.00 each</td></tr>
                 </tbody>
             </table>
-            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.71, Necrotizing Fasciitis 1.19) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains separate from NF diagnosis; when Days_ICU is greater than zero, ICU is coded Yes. These factors are not individual patient predictions.</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.73, Necrotizing Fasciitis 1.28) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains separate from NF diagnosis; when Days_ICU is greater than zero, ICU is coded Yes. These factors are not individual patient predictions.</p>
         </details>
 
         <div class="projections-grid">
@@ -1004,7 +1004,7 @@
     const gateToggle = document.getElementById('gate-toggle');
     gateToggle.checked = false;
 
-    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.705514, NF: 1.18676 };
+    const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.725978, NF: 1.282452 };
     const locales = {
         en: { tagline:'Soft-Tissue Resource Intensity Tool', burn:'Burn Injury Cases', frost:'Frostbite Cases', nf:'Necrotizing Fasciitis Cases', actual:'Cases Entered', weighted:'Resource-Weighted Intensity', monthly:'Relative Monthly Intensity Units', annual:'Relative Annual Intensity Units', unit:'Unit Intensity', shareData:'Share Data', shareApp:'Share App', shareDataTitle:'Share Data', shareAppTitle:'Share App', copied:'Copied to clipboard' },
         fr: { tagline:'Outil d’intensité des ressources des lésions des tissus mous', burn:'Cas de brûlures', frost:'Cas de gelures', nf:'Cas de fasciite nécrosante', actual:'Cas saisis', weighted:'Intensité pondérée des ressources', monthly:'Unités d’intensité mensuelle relative', annual:'Unités d’intensité annuelle relative', unit:'Intensité unitaire', shareData:'Partager les données', shareApp:'Partager l’application', shareDataTitle:'Données partagées', shareAppTitle:'Application partagée', copied:'Copié dans le presse-papiers' },
@@ -1015,7 +1015,7 @@
         currentLanguage = locales[lang] ? lang : 'en'; localStorage.setItem('stair-language', currentLanguage);
         const s = locales[currentLanguage];
         for (const [id,key] of Object.entries({tagline:'tagline',burnLabel:'burn',frostLabel:'frost',nfLabel:'nf',actualLabel:'actual',weightedLabel:'weighted',monthlyLabel:'monthly',annualLabel:'annual'})) document.getElementById(id).textContent = s[key];
-        document.getElementById('burnFactor').textContent = `${s.unit}: 1.00`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.71`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.19`;
+        document.getElementById('burnFactor').textContent = `${s.unit}: 1.00`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.73`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.28`;
         document.getElementById('shareDataBtn').textContent = s.shareData; document.getElementById('shareAppBtn').textContent = s.shareApp;
         document.documentElement.lang = currentLanguage;
     }

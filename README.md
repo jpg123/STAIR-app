@@ -12,9 +12,9 @@ The interface is available in English, French and Spanish; these are the only us
 
 The app applies frozen, burn-referenced cohort intensity factors to a case mix and reports relative intensity units:
 
-`STAIR case-mix burden = (burn cases × 1.000) + (frostbite cases × 0.744) + (necrotizing fasciitis cases × 1.524)`
+`STAIR case-mix burden = (burn cases × 1.000) + (frostbite cases × 0.689) + (necrotizing fasciitis cases × 0.834)`
 
-The factors are frozen cohort-level outputs from the versioned offline FAMD derivation `STAIR-FAMD-2026-09-02-v1`. Burn is the reference level of 1.000. The verified factors are Burn 1.000, Frostbite 0.744103 and Necrotizing Fasciitis 1.524220. The app does not refit or re-estimate FAMD in the browser. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
+The factors are frozen cohort-level outputs from the versioned offline FAMD derivation `STAIR-FAMD-2026-09-02-v1`. Burn is the reference level of 1.000. The verified factors are Burn 1.000, Frostbite 0.688782 and Necrotizing Fasciitis 0.834262. ICU admission is retained as a separate resource variable in the derivation and is not inferred from diagnosis group. The app does not refit or re-estimate FAMD in the browser. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
 
 ## Inputs represented by the derivation
 

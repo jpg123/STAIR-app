@@ -48,6 +48,21 @@
             --nf: #888888;
         }
 
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121212;
+                --text: #ffffff;
+                --text-muted: #aaaaaa;
+                --border: #ffffff;
+                --card-bg: #1e1e1e;
+                --accent: #ffffff;
+                --success: #cccccc;
+                --burn: #ffffff;
+                --frost: #cccccc;
+                --nf: #999999;
+            }
+        }
+
         body.dark-theme {
             --bg: #121212;
             --text: #ffffff;
@@ -860,8 +875,6 @@
             <button type="button" data-language="fr">Français</button>
             <button type="button" data-language="es">Español</button>
         </div>
-        <button id="theme-toggle">Dark Mode</button>
-        <button id="glass-toggle">Glass Mode</button>
     </header>
 
     <div class="card">
@@ -973,64 +986,7 @@
 </div>
 
 <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const glassToggle = document.getElementById('glass-toggle');
     const gateToggle = document.getElementById('gate-toggle');
-
-    function syncThemeButtons() {
-        const dark = document.body.classList.contains('dark-theme');
-        const glass = document.body.classList.contains('glass-theme');
-
-        if (!glass && !dark) {
-            themeToggle.innerText = 'Dark Mode';
-            glassToggle.innerText = 'Glass Mode';
-            return;
-        }
-
-        if (!glass && dark) {
-            themeToggle.innerText = 'Light Mode';
-            glassToggle.innerText = 'Glass Mode';
-            return;
-        }
-
-        if (glass && !dark) {
-            themeToggle.innerText = 'Dark Mode';
-            glassToggle.innerText = 'Glass Light';
-            return;
-        }
-
-        themeToggle.innerText = 'Light Mode';
-        glassToggle.innerText = 'Glass Dark';
-    }
-
-    themeToggle.addEventListener('click', () => {
-        const glass = document.body.classList.contains('glass-theme');
-        const dark = document.body.classList.contains('dark-theme');
-
-        if (glass) {
-            if (dark) {
-                document.body.classList.remove('dark-theme');
-            } else {
-                document.body.classList.add('dark-theme');
-            }
-        } else {
-            document.body.classList.toggle('dark-theme');
-        }
-
-        syncThemeButtons();
-    });
-
-    glassToggle.addEventListener('click', () => {
-        const glass = document.body.classList.contains('glass-theme');
-        if (glass) {
-            document.body.classList.remove('glass-theme', 'dark-theme');
-        } else {
-            document.body.classList.add('glass-theme');
-        }
-        syncThemeButtons();
-    });
-
-    syncThemeButtons();
     gateToggle.checked = false;
 
     const INTENSITY_LOAD = { BURN: 1.0, FROST: 0.62, NF: 1.80 };

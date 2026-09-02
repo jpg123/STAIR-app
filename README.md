@@ -6,7 +6,7 @@ Use the live app at <https://jpg123.github.io/STAIR-app/STAIR-app.html> or open 
 
 ## Languages and sharing
 
-The interface is available in English, French and Spanish. The selected language is saved locally in the browser. **Share Data** creates a text summary of the entered case mix, weighted intensity and repository link. **Share App** shares the hosted app URL. Where the browser supports the Web Share API, the native share sheet is used; otherwise the app copies the share text to the clipboard. No patient-identifiable information should be entered.
+The interface is available in English, French and Spanish; these are the only user-selectable options. Appearance follows the device or browser color-scheme preference automatically—there is no dark/light or other display-mode selector. The selected language is saved locally in the browser. **Share Data** creates a text summary of the entered case mix, weighted intensity and repository link. **Share App** shares the hosted app URL. Where the browser supports the Web Share API, the native share sheet is used; otherwise the app copies the share text to the clipboard. No patient-identifiable information should be entered.
 
 ## What the app does
 

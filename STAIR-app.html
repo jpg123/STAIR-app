@@ -843,7 +843,7 @@
             <div class="intro-text">
                 <p>STAIR is a planning tool derived from a Canadian provincial registry review of burns, frostbite, and necrotizing fasciitis admissions spanning 2004-2024.</p>
                 <p>The app summarizes comparative resource intensity for institutional planning and funding discussions. It is a research and administrative aid, not a bedside decision tool.</p>
-                <p>The underlying analysis uses frozen, FAMD-derived cohort factors to communicate differences in hospital stay, ICU use, procedures, transfusion burden and related resource domains across the three diagnosis groups. The app does not refit FAMD or calculate patient-level predictions.</p>
+                <p>The underlying analysis uses frozen cohort factors from an offline STAIR resource-intensity derivation to communicate differences in hospital stay, ICU use, procedures, transfusion burden and related resource domains across the three diagnosis groups. The app does not re-estimate weights or calculate patient-level predictions.</p>
                 <p>No patient-identifiable data is entered or transmitted from this device.</p>
             </div>
         </div>
@@ -930,7 +930,7 @@
 
         <details class="card" style="margin-top:20px; padding:16px;">
             <summary><strong>Derivation and scoring details</strong></summary>
-            <p>STAIR is a frozen, cohort-level FAMD-derived index. The app does not refit the model. For the pooled derivation, standardized inputs are combined as <code>STAIR = Σ(weight × z-score)</code>.</p>
+            <p>STAIR is a frozen, cohort-level resource-intensity index. The app does not refit the offline derivation. Where component weights are supplied, standardized inputs are combined as <code>STAIR = Σ(weight × z-score)</code>.</p>
             <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
                 <thead><tr><th style="text-align:left; padding:6px; border-bottom:1px solid var(--border);">Input</th><th style="text-align:right; padding:6px; border-bottom:1px solid var(--border);">Pooled weight</th></tr></thead>
                 <tbody>
@@ -967,7 +967,7 @@
 
     <footer>
         Soft-Tissue Adjustment Intensity Ratio (STAIR) | Companion to STAIR-derivation study<br>
-        Frozen FAMD-derived cohort factors; knowledge-translation use only.<br>
+        Frozen cohort factors; knowledge-translation use only.<br>
         <a href="mailto:jgawaziuk@live.?subject=Question%20about%20the%20STAIR%20app">Questions?</a><br>
     </footer>
 </div>

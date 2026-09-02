@@ -14,11 +14,11 @@ The app applies frozen, burn-referenced cohort intensity factors to a case mix a
 
 `STAIR case-mix burden = (burn cases × 1.00) + (frostbite cases × 0.62) + (necrotizing fasciitis cases × 1.80)`
 
-The factors are derived from the study's FAMD-based cohort-level resource-intensity analysis. Burn is the reference level of 1.00. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
+The factors are frozen cohort-level outputs from the offline STAIR resource-intensity derivation. Burn is the reference level of 1.00. The app does not claim to perform FAMD, PCA or any other re-estimation in the browser. The outputs communicate relative cohort burden; they are not bed-day estimates or estimates of individual patient length of stay, mortality or treatment effect.
 
 ## Inputs represented by the derivation
 
-The underlying resource-intensity construct uses prespecified admission-level and utilization variables: hospital length of stay, ICU admission, ICU days, procedure count, PRBC transfusion exposure, PRBC units, amputation, grafting and free-tissue transfer. The app displays the resulting frozen cohort factors and does not refit FAMD or calculate new weights in the browser.
+The underlying resource-intensity construct uses prespecified admission-level and utilization variables: hospital length of stay, ICU admission, ICU days, procedure count, PRBC transfusion exposure, PRBC units, amputation, grafting and free-tissue transfer. The app displays frozen cohort factors and does not refit or re-estimate weights in the browser. The exact offline derivation method, preprocessing and validation must be documented with the accompanying research package.
 
 ## Interpretation and limitations
 

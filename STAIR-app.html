@@ -893,7 +893,7 @@
             <div class="input-row">
                 <div class="label-wrap">
                     <span class="title" id="frostLabel">Frostbite Cases</span>
-                    <span class="factor" id="frostFactor">Unit Intensity: 0.73</span>
+                    <span class="factor" id="frostFactor">Unit Intensity: 0.80</span>
                 </div>
                 <div class="input-wrap">
                     <input type="range" id="frostIn" min="0" max="100" value="5" oninput="update()">
@@ -930,7 +930,7 @@
                 </div>
                 <div class="metric-help-panel" id="weightedHelpPanel">
                     A weighted case-mix score reflecting relative resource burden.
-                    Formula: (Burn cases × 1.00) + (Frostbite cases × 0.73) + (NF cases × 1.28).
+                    Formula: (Burn cases × 1.00) + (Frostbite cases × 0.80) + (NF cases × 1.28).
                 </div>
             </div>
         </div>
@@ -975,7 +975,7 @@
                     <tr><td>Amputation, grafting and free-tissue transfer</td><td style="text-align:right;">0.00 each</td></tr>
                 </tbody>
             </table>
-            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.73, Necrotizing Fasciitis 1.28) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains separate from NF diagnosis; when Days_ICU is greater than zero, ICU is coded Yes. These factors are not individual patient predictions.</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">The published cohort factors (Burn 1.00, Frostbite 0.80, Necrotizing Fasciitis 1.28) are separate burn-referenced cohort summaries from the versioned FAMD artifact. ICU admission remains separate from NF diagnosis; when Days_ICU is greater than zero, ICU is coded Yes. These factors are not individual patient predictions.</p>
         </details>
 
         <div class="projections-grid">
@@ -1020,7 +1020,7 @@
         currentLanguage = locales[lang] ? lang : 'en'; localStorage.setItem('stair-language', currentLanguage);
         const s = locales[currentLanguage];
         for (const [id,key] of Object.entries({tagline:'tagline',burnLabel:'burn',frostLabel:'frost',nfLabel:'nf',actualLabel:'actual',weightedLabel:'weighted',monthlyLabel:'monthly',annualLabel:'annual'})) document.getElementById(id).textContent = s[key];
-        document.getElementById('burnFactor').textContent = `${s.unit}: 1.00`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.73`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.28`;
+        document.getElementById('burnFactor').textContent = `${s.unit}: 1.00`; document.getElementById('frostFactor').textContent = `${s.unit}: 0.80`; document.getElementById('nfFactor').textContent = `${s.unit}: 1.28`;
         document.getElementById('shareDataBtn').textContent = s.shareData; document.getElementById('shareAppBtn').textContent = s.shareApp;
         document.documentElement.lang = currentLanguage;
     }

@@ -22,4 +22,4 @@ The app does not refit FAMD. This app-only repository does not contain the deriv
 - `index.html`: redirect to the standalone app
 - `manifest.json`, `icon.svg` and `sw.js`: progressive web app metadata and offline support
 
-The code is provided for research and educational knowledge translation. Contact the study team before adapting the factors for institutional use.
+The code is provided for research and educational knowledge translation. No reuse license is included; contact the study team before adapting or redistributing the code or factors.
